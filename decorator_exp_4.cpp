@@ -101,6 +101,8 @@ int main(){
     cout<<alcohol->getDrinks()<<"\n";
     cout<<alcohol->getCost()<<"\n";
     Beverage* beverage=new Water(alcohol);
+    cout<<beverage->getDrinks()<<"\n";
+    cout<<beverage->getCost()<<"\n";
     beverage=new Icecube(beverage);
     cout<<beverage->getDrinks()<<"\n";
     cout<<beverage->getCost()<<"\n";
