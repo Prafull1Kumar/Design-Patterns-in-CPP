@@ -1,5 +1,12 @@
 #include<iostream>
 using namespace std;
+
+/*
+When to use Factory Pattern?
+1. When the exact types and dependencies of the objects your code should work with are not known
+*/
+
+
 class Message{
     public:
     virtual void getProduct()=0;
@@ -44,3 +51,4 @@ int main(){
     printMessage(new TextFactory());
     return 0;
 }
+

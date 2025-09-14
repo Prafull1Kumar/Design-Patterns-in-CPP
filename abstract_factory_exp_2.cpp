@@ -1,5 +1,11 @@
 #include<iostream>
 using namespace std;
+/*
+When to use Abstract Factory Pattern?
+1. When the exact types and dependencies of the objects your code should work with are not known
+2. When you want to provide a library of products that can be easily extended
+3. When you want to enforce a certain level of consistency among the products
+*/
 class Storage{
     public:
     virtual string getId()=0;
