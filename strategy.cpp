@@ -1,5 +1,14 @@
 #include<iostream>
 using namespace std;
+/*
+    Strategy Pattern
+When to use Strategy Pattern?   
+ans)
+1. When you have multiple algorithms for a specific task and 
+    want to switch between them dynamically
+2. When you want to isolate the implementation details of an algorithm 
+    from the code that uses it
+*/
 class Resolution{
     public:
     virtual void getResolution()=0;

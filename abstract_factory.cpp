@@ -1,5 +1,8 @@
 #include<iostream>
+#include<map>
+#include<functional>
 using namespace std;
+// https://www.youtube.com/watch?v=QNpwWkdFvgQ&t=13s
 class Car{
     public:
     virtual void yourCar()=0;
@@ -34,73 +37,85 @@ class NoCar:public Car{
         cout<<"This Car Stock is empty"<<"\n";
     }
 };
-class Factory{
-    public:
-    virtual Car* buy(string location)=0;
-};
-class IndiaFactory:public Factory{
-    public:
-    Car* buy(string name){
-        if(name=="Tata"){
-            return new Tata();
-        }
-        else if(name=="Mahindra"){
-            return new Mahindra();
+// Abstract Factory with registration
+class Factory {
+public:
+    using CarCreator = std::function<Car*()>;
+    virtual Car* buy(const string& name) {
+        auto it = creators.find(name);
+        if (it != creators.end()) {
+            return it->second();
         }
         return new NoCar();
     }
+    void registerCar(const string& name, CarCreator creator) {
+        creators[name] = creator;
+    }
+protected:
+    std::map<string, CarCreator> creators;
 };
-class USFactory:public Factory{
-    public:
-    Car* buy(string name){
-        if(name=="Audi"){
-            return new Audi();
-        }
-        else if(name=="BMW"){
-            return new BMW();
-        }
-        return new NoCar();
+
+class IndiaFactory : public Factory {
+public:
+    IndiaFactory() {
+        registerCar("Tata", []() { return new Tata(); });
+        registerCar("Mahindra", []() { return new Mahindra(); });
     }
 };
-class defaultFactory:public Factory{
-    public:
-    Car* buy(string name){
-        // if(name=="Audi"){
-        //     return new Audi();
-        // }
-        // else if(name=="BMW"){
-        //     return new BMW();
-        // }
-        cout<<"No Factory at this location"<<"\n";
-        return NULL;
+
+class USFactory : public Factory {
+public:
+    USFactory() {
+        registerCar("Audi", []() { return new Audi(); });
+        registerCar("BMW", []() { return new BMW(); });
     }
 };
-class AssignFactory{
-    public:
-    Factory* findFactory(string location){
-        if(location=="India"){
-            return new IndiaFactory();
-        }
-        else if(location=="USA"){
-            return new USFactory();
-        }
-        cout<<"No Factory at this location"<<"\n";
-        return NULL;
+
+class AssignFactory {
+public:
+    using FactoryCreator = std::function<Factory*()>;
+    AssignFactory() {
+        registerFactory("India", []() { return new IndiaFactory(); });
+        registerFactory("USA", []() { return new USFactory(); });
     }
+    Factory* findFactory(const string& location) {
+        auto it = factories.find(location);
+        if (it != factories.end()) {
+            return it->second();
+        }
+        cout << "No Factory at this location" << "\n";
+        return nullptr;
+    }
+    void registerFactory(const string& location, FactoryCreator creator) {
+        factories[location] = creator;
+    }
+private:
+    std::map<string, FactoryCreator> factories;
 };
-int main(){
-    AssignFactory* assign;
-    Factory* f1=assign->findFactory("USA");
-    Car* c1=f1->buy("Audi");
-    c1->yourCar();
-    Car* c2=f1->buy("BMW");
-    c2->yourCar();
-    Car* c3=f1->buy("K");
-    c3->yourCar();
-    Factory* f2=assign->findFactory("India");
-    Car* c4=f2->buy("Mahindra");
-    c4->yourCar();
-    Factory* f3=assign->findFactory("Pakistan");
+int main() {
+    AssignFactory assign;
+    Factory* f1 = assign.findFactory("USA");
+    if (f1) {
+        Car* c1 = f1->buy("Audi");
+        c1->yourCar();
+        delete c1;
+        Car* c2 = f1->buy("BMW");
+        c2->yourCar();
+        delete c2;
+        Car* c3 = f1->buy("K");
+        c3->yourCar();
+        delete c3;
+        delete f1;
+    }
+    Factory* f2 = assign.findFactory("India");
+    if (f2) {
+        Car* c4 = f2->buy("Mahindra");
+        c4->yourCar();
+        delete c4;
+        delete f2;
+    }
+    Factory* f3 = assign.findFactory("Pakistan");
     // f3->buy("")
+    if (f3) delete f3;
     return 0;
 }
