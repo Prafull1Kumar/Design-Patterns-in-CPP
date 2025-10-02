@@ -4,6 +4,7 @@ using namespace std;
 /*
 When to use Factory Pattern?
 1. When the exact types and dependencies of the objects your code should work with are not known
+2. 
 */
 
 

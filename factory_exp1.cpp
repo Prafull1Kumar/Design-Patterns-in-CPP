@@ -10,13 +10,13 @@ class Tinder:public DatingApp{
         cout<<"Lists of girls from Tinder"<<"\n";
     }
 };
-class Hinge:public DatingApp{
+class Hinge:public DatingApp{ 
     public:
     void getGirls(){
         cout<<"Lists of Girls from Hinge"<<"\n";
     }
 };
-class MobileAppFactory{
+class MobileAppFactory{ 
     public:
     DatingApp* getApp(){
         DatingApp* app=createApp();
