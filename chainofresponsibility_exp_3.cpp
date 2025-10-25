@@ -1,5 +1,10 @@
 #include<iostream>
-using namespace std;
+using namespace std; 
+/*
+When to use Chain of Responsibility Pattern?
+When you want to decouple the sending request with the object being assign to handle
+that request
+*/
 
 class BodyType{
     BodyType *next;
