@@ -1,6 +1,6 @@
 #include<iostream>
 using namespace std;
-// Lazy singleton
+// Lazy singleton: only create instance when it is needed 
 class Wifi{
     string password;
     static Wifi* wifi;
